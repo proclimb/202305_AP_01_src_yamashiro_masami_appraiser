@@ -11,14 +11,17 @@ function fnYMDCheck(msg, obj) {
 	var tmp = oYMD.split('/');
 	var ymd = new Date(tmp[0], parseInt(tmp[1], 10) - 1, parseInt(tmp[2], 10));
 	var vYMD = ymd.getFullYear() + '/' + ('0' + (ymd.getMonth() + 1)).slice(-2) + '/' + ('0' + ymd.getDate()).slice(-2);
-	if (oYMD == vYMD) {
-		return true;
+	if (oYMD.length) {
+		if (oYMD == vYMD) {
+			return true;
+		} else {
+			alert(msg + "を入力してください");
+			return false;
+		}
 	} else {
-		alert(msg + "を入力してください");
-		return false;
+		return true;
 	}
 }
-
 
 
 /**
