@@ -43,7 +43,7 @@ function subArticle()
 		<input type="hidden" name="sPage" value="<?php print $sPage ?>" />
 		<input type="hidden" name="articleNo" />
 		<input type="hidden" name="sName" />
-
+		<input type="hidden" name="sRoom" />
 		<a href="javascript:form.act.value='articleEdit';form.submit();"><img src="./images/btn_enter.png"></a>
 
 		<div class="search">
@@ -170,14 +170,15 @@ function subArticleEdit()
 		$res = mysqli_query($conn, $sql);
 		$row = mysqli_fetch_array($res);
 
-		$articleNo   = htmlspecialchars($row["ARTICLENO"]);
 		$article     = htmlspecialchars($row["ARTICLE"]);
 		$room        = htmlspecialchars($row["ROOM"]);
 		$keyPlace    = htmlspecialchars($row["KEYPLACE"]);
+		$address     = htmlspecialchars($row["ADDRESS"]);
 		$articleNote = htmlspecialchars($row["ARTICLENOTE"]);
 		$keyBox      = htmlspecialchars($row["KEYBOX"]);
 		$drawing     = htmlspecialchars($row["DRAWING"]);
 		$sellCharge  = htmlspecialchars($row["SELLCHARGE"]);
+		$del         = htmlspecialchars($row["DEL"]);
 		$purpose  = '更新';
 		$btnImage = 'btn_load.png';
 	} else {
@@ -248,11 +249,9 @@ function subArticleEdit()
 			</tr>
 		</table>
 
-		<a href="javascript:fnArticleEditCheck();"><img src="./images/<?php print $btnImage ?>" /></a>　
-		<a href="javascript:form.act.value='articleSearch';form.submit();"><img src="./images/btn_return.png" /></a>
-		<?php if ($articleNo) { ?>
-			&nbsp;&nbsp;<a href="javascript:fnArticleDeleteCheck(<?php print $articleNo ?>);"><img src="./images/btn_del.png" /></a>
-		<?php } ?>
+		<a href="javascript:fnArticleEditCheck();"><img src="./images/<?php print $btnImage ?>" /></a>
+		<a href="javascript:form.act.value='article';form.submit();"><img src="./images/btn_return.png" /></a>
+		<?php if ($articleNo) { ?>&nbsp;&nbsp;<a href="javascript:fnArticleDeleteCheck(<?php print $articleNo ?>);"><img src="./images/btn_del.png" /></a><?php } ?>
 	</form>
 <?php
 }
@@ -267,15 +266,15 @@ function subArticleEditComplete()
 {
 	$conn = fnDbConnect();
 
-	$sDel         = htmlspecialchars($_REQUEST['sDel']);
-	$sArticle     = htmlspecialchars($_REQUEST['sArticle']);
-	$sRoom        = htmlspecialchars($_REQUEST['sRoom']);
-	$sKeyPlace    = htmlspecialchars($_REQUEST['sKeyPlace']);
-	$sArticleNote = htmlspecialchars($_REQUEST['sArticleNote']);
-	$sKeyBox      = htmlspecialchars($_REQUEST['sKeyBox']);
-	$sDueDTFrom   = htmlspecialchars($_REQUEST['sDueDTFrom']);
-	$sDueDTTo     = htmlspecialchars($_REQUEST['sDueDTTo']);
-	$sSellCharge  = htmlspecialchars($_REQUEST['sSellCharge']);
+	$sDel         = $_REQUEST['sDel'];
+	$sArticle     = $_REQUEST['sArticle'];
+	$sRoom        = $_REQUEST['sRoom'];
+	$sKeyPlace    = $_REQUEST['sKeyPlace'];
+	$sArticleNote = $_REQUEST['sArticleNote'];
+	$sKeyBox      = $_REQUEST['sKeyBox'];
+	$sDueDTFrom   = $_REQUEST['sDueDTFrom'];
+	$sDueDTTo     = $_REQUEST['sDueDTTo'];
+	$sSellCharge  = $_REQUEST['sSellCharge'];
 
 	$orderBy = $_REQUEST['orderBy'];
 	$orderTo = $_REQUEST['orderTo'];
@@ -302,8 +301,8 @@ function subArticleEditComplete()
 
 		$res = mysqli_query($conn, $sql);
 
-		/* $sql = fnSqlArticleInsert(fnNextNo('ARTICLE'), $article, $room, $keyPlace, $address, $articleNote, $keyBox, $drawing, $sellCharge, $del);
-		   $res = mysqli_query($conn,$sql); */
+		$sql = fnSqlFManagerInsert(fnNextNo('FM'), $article, $room, $articleNote, $del);
+		$res = mysqli_query($conn, $sql);
 	}
 
 	$_REQUEST['act'] = 'articleSearch';
