@@ -5,8 +5,10 @@
  * @return true:正常、false:異常
  */
 function fnYMDCheck(msg, obj) {
+
 	// 未入力時はチェックしない
 	oYMD = obj.value;
+	if (!oYMD) { return true; }
 
 	var tmp = oYMD.split('/');
 	var ymd = new Date(tmp[0], parseInt(tmp[1], 10) - 1, parseInt(tmp[2], 10));
@@ -18,8 +20,7 @@ function fnYMDCheck(msg, obj) {
 			alert(msg + "を入力してください");
 			return false;
 		}
-	} else {
-		return true;
+
 	}
 }
 
