@@ -2,6 +2,9 @@
 //
 //売主物件画面
 //
+
+use function PHPSTORM_META\sql_injection_subst;
+
 function subSellView($param)
 {
 ?>
@@ -102,6 +105,7 @@ function subSellView($param)
 		if ($_REQUEST['act'] == 'sell') {
 			return;
 		}
+
 
 		$sql = fnSqlSellList(0, $param);
 		$res = mysqli_query($param["conn"], $sql);
